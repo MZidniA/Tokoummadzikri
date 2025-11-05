@@ -1,5 +1,6 @@
-import { ShoppingBag, User, Menu, X } from "lucide-react";
+import { User, Menu, X } from "lucide-react";
 import { useState } from "react";
+import logoToko from '../assets/tokoummadzikrilogo.jpg';
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
@@ -22,7 +23,11 @@ export function Navbar({ onNavigate, currentPage }: NavbarProps) {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center cursor-pointer" onClick={() => onNavigate('home')}>
-            <ShoppingBag className="h-8 w-8 text-[var(--brand-coklat-sedang)]" />
+            <img 
+              src={logoToko} 
+              alt="Toko Umma Dzikri Logo" 
+              className="h-10 w-10 rounded-full object-cover"
+              />
             <span className="ml-2 text-[var(--brand-coklat-tua)]" style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '20px' }}>
               Toko Umma Dzikri
             </span>

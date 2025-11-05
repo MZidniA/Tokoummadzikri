@@ -346,6 +346,12 @@
   }
 
   :root {
+    /* Color Palette Toko Umma Dzikri */
+    --teks: #5D3926;
+    --sekunder: #AA8770;
+    --aksen: #E0A78F;
+    --latar-belakang: #FFFFFF;
+
     --brand-coklat-tua: #4e342e;
     --brand-coklat-sedang: #795548;
     --brand-coklat-muda: #efebe9;
@@ -355,19 +361,20 @@
     --netral-abu-abu: #757575;
     --netral-garis-batas: #e0e0e0;
     --netral-putih-bg: #fafafa;
-    --background: var(--netral-putih-bg);
+
+    --background: var(--latar-belakang);
     --foreground: var(--netral-hitam);
     --card: #fff;
     --card-foreground: var(--netral-hitam);
-    --primary: var(--aksen-kuning-cerah);
+    --primary: var(--aksen);
     --primary-foreground: var(--netral-hitam);
     --secondary: var(--brand-coklat-sedang);
     --secondary-foreground: #fff;
     --muted: var(--brand-coklat-muda);
     --muted-foreground: var(--netral-abu-abu);
-    --accent: var(--aksen-oranye-lembut);
+    --accent: var(--aksen);
     --accent-foreground: var(--netral-hitam);
-    --destructive: #ef4444;
+    --destructive: var(--sekunder);
     --destructive-foreground: #fff;
     --border: var(--netral-garis-batas);
     --input: var(--netral-garis-batas);
