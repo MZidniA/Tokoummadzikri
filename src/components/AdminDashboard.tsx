@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { InputField } from "./InputField";
-import { Button } from "./ui/Button"; // Sesuaikan path jika perlu
+import { Button } from "./Button"; // Sesuaikan path jika perlu
 import { Plus, Edit, Trash2, X, Loader2, UploadCloud, Image } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Navbar } from './Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-// import { supabase } from '../supabaseClient'; // <-- DIHAPUS
 
 // Alamat API Backend Anda di DigitalOcean
-const API_URL = 'https://api-tokoummadzikri.duckdns.org';
+const API_URL = 'http://128.199.67.167:4000';
 
 // Interface Produk (tetap sama)
 interface Product {
@@ -20,6 +19,10 @@ interface Product {
   category: string;
   image: string;
   images?: string[];
+  ingredients?: string;
+  nutrition?: string;
+  servingSuggestion?: string;
+  benefits?: string[];
 }
 
 type ProductFormData = Omit<Product, 'id' | 'created_at'>;
@@ -44,7 +47,7 @@ export function AdminDashboard() {
 
   const categories = ["Souvenir", "Pakaian", "Makanan & Minuman"];
 
-  // --- (DIUBAH) FUNGSI MENGAMBIL DATA ---
+  // --- FUNGSI MENGAMBIL DATA ---
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -63,7 +66,7 @@ export function AdminDashboard() {
     setIsLoading(false);
   }
   
-  // --- FUNGSI MODAL (Sebagian besar tetap sama) ---
+  // --- FUNGSI MODAL ---
   const resetModalState = () => {
     setShowModal(false);
     setEditingProduct(null);
@@ -96,7 +99,7 @@ export function AdminDashboard() {
     setShowModal(true);
   };
 
-  // --- (DIUBAH) FUNGSI HAPUS ---
+  // --- FUNGSI HAPUS ---
   const handleDelete = async (id: number) => {
     if (confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
       try {
@@ -114,7 +117,7 @@ export function AdminDashboard() {
     }
   };
 
-  // --- FUNGSI SAAT FILE DIPILIH (Tetap sama) ---
+  // --- FUNGSI SAAT FILE DIPILIH ---
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     filePreviews.forEach(url => URL.revokeObjectURL(url));
     if (e.target.files && e.target.files.length > 0) {
@@ -128,30 +131,27 @@ export function AdminDashboard() {
     }
   }
 
-  // --- (DIUBAH TOTAL) FUNGSI SUBMIT MODAL ---
+  // --- FUNGSI SUBMIT MODAL ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitting) return; 
+    if (isSubmitting) return; // <-- Perlindungan untuk tombol Submit
     setIsSubmitting(true);
 
     try {
-      // 1. Buat FormData
-      // FormData adalah cara untuk mengirim file + teks ke API
       const data = new FormData();
-      
-      // 2. Tambahkan semua data teks
       data.append('title', formData.title);
       data.append('description', formData.description);
       data.append('price', formData.price);
       data.append('category', formData.category);
-      // (Tambahkan kolom lain jika ada, misal ingredients, benefits)
+      data.append('ingredients', formData.ingredients || '');
+      data.append('nutrition', formData.nutrition || '');
+      data.append('servingSuggestion', formData.servingSuggestion || '');
+      data.append('benefits', (formData.benefits || []).join(','));
 
-      // 3. Tambahkan semua file BARU
       uploadingFiles.forEach(file => {
-        data.append('files', file); // 'files' harus cocok dengan `upload.array('files')` di server
+        data.append('files', file); 
       });
 
-      // 4. Jika MENGEDIT dan TIDAK ADA file baru, kita harus kirim URL lama
       if (editingProduct && uploadingFiles.length === 0) {
         data.append('image', formData.image);
         (formData.images || []).forEach(imgUrl => {
@@ -159,14 +159,11 @@ export function AdminDashboard() {
         });
       }
 
-      // 5. Kirim ke API (POST untuk Tambah, PUT untuk Edit)
       let response: Response;
       if (editingProduct) {
-        // --- LOGIKA UPDATE (EDIT) ---
         response = await fetch(`${API_URL}/produk/${editingProduct.id}`, {
           method: 'PUT',
-          body: data, // Kirim FormData
-          // JANGAN set 'Content-Type', browser akan otomatis
+          body: data, 
         });
 
         if (!response.ok) throw new Error('Gagal meng-update produk');
@@ -175,7 +172,6 @@ export function AdminDashboard() {
         setProducts(products.map(p => (p.id === editingProduct.id ? updatedProduct : p)));
 
       } else {
-        // --- LOGIKA INSERT (TAMBAH BARU) ---
         if (uploadingFiles.length === 0) {
           alert("Silakan pilih gambar produk.");
           setIsSubmitting(false);
@@ -184,7 +180,7 @@ export function AdminDashboard() {
 
         response = await fetch(`${API_URL}/produk`, {
           method: 'POST',
-          body: data, // Kirim FormData
+          body: data,
         });
 
         if (!response.ok) throw new Error('Gagal menambah produk');
@@ -214,7 +210,7 @@ export function AdminDashboard() {
     navigate('/');
   };
 
-  // --- JSX (Tampilan) tidak ada perubahan ---
+  // --- JSX (Tampilan) ---
   return (
     <>
       <Navbar />
@@ -383,16 +379,26 @@ export function AdminDashboard() {
                     )}
                   </div>
                   
-                  {/* Tombol Submit/Batal */}
+                  {/* --- TOMBOL-TOMBOL YANG DIPERBAIKI --- */}
                   <div className="flex gap-3 pt-4">
-                    <Button type="submit" fullWidth disabled={isSubmitting}>
+                    <Button type="submit" fullWidth> {/* 'disabled' DIHAPUS */}
                       {isSubmitting ? (
                         <Loader2 className="h-5 w-5 animate-spin" />
                       ) : (
                         editingProduct ? 'Update Produk' : 'Tambah Produk'
                       )}
                     </Button>
-                    <Button type="button" variant="outline" fullWidth onClick={resetModalState} disabled={isSubmitting}>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      fullWidth 
+                      onClick={() => {
+                        // Tambahkan cek di sini
+                        if (isSubmitting) return; 
+                        resetModalState();
+                      }}
+                      // 'disabled' DIHAPUS
+                    >
                       Batal
                     </Button>
                   </div>
