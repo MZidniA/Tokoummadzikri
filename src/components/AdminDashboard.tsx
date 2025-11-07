@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { InputField } from "./InputField";
-import { Button } from "./Button"; // Sesuaikan path jika perlu
+import { Button } from "./ui/Button"; // Sesuaikan path jika perlu
 import { Plus, Edit, Trash2, X, Loader2, UploadCloud, Image } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Navbar } from './Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-// Alamat API Backend Anda di DigitalOcean
+// Alamat API Backend Anda (PASTIKAN INI SUDAH HTTPS)
 const API_URL = 'https://api-tokoummadzikri.duckdns.org';
 
-// Interface Produk (tetap sama)
 interface Product {
   id: number;
   title: string;
@@ -134,11 +133,12 @@ export function AdminDashboard() {
   // --- FUNGSI SUBMIT MODAL ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitting) return; // <-- Perlindungan untuk tombol Submit
+    if (isSubmitting) return; 
     setIsSubmitting(true);
 
     try {
       const data = new FormData();
+      
       data.append('title', formData.title);
       data.append('description', formData.description);
       data.append('price', formData.price);
@@ -152,12 +152,13 @@ export function AdminDashboard() {
         data.append('files', file); 
       });
 
+      // --- INI DIA PERBAIKANNYA ---
       if (editingProduct && uploadingFiles.length === 0) {
         data.append('image', formData.image);
-        (formData.images || []).forEach(imgUrl => {
-          data.append('images', imgUrl);
-        });
+        // Mengubah array URL menjadi satu string dipisah koma
+        data.append('images', (formData.images || []).join(','));
       }
+      // -----------------------------
 
       let response: Response;
       if (editingProduct) {
@@ -166,7 +167,10 @@ export function AdminDashboard() {
           body: data, 
         });
 
-        if (!response.ok) throw new Error('Gagal meng-update produk');
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.error || 'Gagal meng-update produk');
+        }
 
         const updatedProduct = await response.json();
         setProducts(products.map(p => (p.id === editingProduct.id ? updatedProduct : p)));
@@ -183,7 +187,10 @@ export function AdminDashboard() {
           body: data,
         });
 
-        if (!response.ok) throw new Error('Gagal menambah produk');
+        if (!response.ok) {
+           const err = await response.json();
+           throw new Error(err.error || 'Gagal menambah produk');
+        }
 
         const newProduct = await response.json();
         setProducts([newProduct, ...products]);
@@ -210,7 +217,7 @@ export function AdminDashboard() {
     navigate('/');
   };
 
-  // --- JSX (Tampilan) ---
+  // --- JSX (Tampilan) tidak ada perubahan ---
   return (
     <>
       <Navbar />
@@ -379,9 +386,13 @@ export function AdminDashboard() {
                     )}
                   </div>
                   
-                  {/* --- TOMBOL-TOMBOL YANG DIPERBAIKI --- */}
+                  {/* Tombol Submit/Batal */}
                   <div className="flex gap-3 pt-4">
-                    <Button type="submit" fullWidth> {/* 'disabled' DIHAPUS */}
+                    <Button 
+                      type="submit" 
+                      fullWidth 
+                      // 'disabled' DIHAPUS
+                    >
                       {isSubmitting ? (
                         <Loader2 className="h-5 w-5 animate-spin" />
                       ) : (
@@ -393,7 +404,6 @@ export function AdminDashboard() {
                       variant="outline" 
                       fullWidth 
                       onClick={() => {
-                        // Tambahkan cek di sini
                         if (isSubmitting) return; 
                         resetModalState();
                       }}
