@@ -18,10 +18,6 @@ interface Product {
   category: string;
   image: string;
   images?: string[];
-  ingredients?: string;
-  nutrition?: string;
-  servingSuggestion?: string;
-  benefits?: string[];
 }
 
 type ProductFormData = Omit<Product, 'id' | 'created_at'>;
@@ -143,10 +139,6 @@ export function AdminDashboard() {
       data.append('description', formData.description);
       data.append('price', formData.price);
       data.append('category', formData.category);
-      data.append('ingredients', formData.ingredients || '');
-      data.append('nutrition', formData.nutrition || '');
-      data.append('servingSuggestion', formData.servingSuggestion || '');
-      data.append('benefits', (formData.benefits || []).join(','));
 
       uploadingFiles.forEach(file => {
         data.append('files', file); 
