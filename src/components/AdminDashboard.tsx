@@ -8,7 +8,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 // Alamat API Backend Anda di DigitalOcean
-const API_URL = 'http://128.199.67.167:4000';
+const API_URL = 'https://api-tokoummadzikri.duckdns.org';
 
 // Interface Produk (tetap sama)
 interface Product {
