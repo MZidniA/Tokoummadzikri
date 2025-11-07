@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { InputField } from "./InputField";
-import { Button } from "./ui/Button"; // Sesuaikan path jika perlu
+import { Button } from "./Button"; // Sesuaikan path jika perlu
 import { Plus, Edit, Trash2, X, Loader2, UploadCloud, Image } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Navbar } from './Navbar';
