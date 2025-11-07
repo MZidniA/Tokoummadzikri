@@ -1,8 +1,8 @@
-import React, { useState } from "react"; // Tambahkan import React
-import { MapPin, Phone, Mail, MessageCircle, Send, Loader2 } from "lucide-react"; // Tambah Loader2
-import { Button } from "./Button"; // Path ini menunjuk ke src/components/ui/Button.tsx
-import { InputField } from "./InputField"; // Path ini menunjuk ke src/components/Inputfield.tsx
-import { supabase } from '../supabaseClient'; // Path ini menunjuk ke src/supabaseClient.ts
+import React, { useState } from "react"; 
+import { MapPin, Phone, Mail, MessageCircle, Send, Loader2 } from "lucide-react"; 
+import { Button } from "./Button"; 
+import { InputField } from "./InputField"; 
+import { supabase } from '../supabaseClient'; 
 
 export function ContactPage() {
   const [formData, setFormData] = useState({
@@ -15,15 +15,13 @@ export function ContactPage() {
   const [isLoading, setIsLoading] = useState(false); // STATE UNTUK LOADING
   const [submitError, setSubmitError] = useState<string | null>(null); // STATE UNTUK ERROR
 
-  // FUNGSI SUBMIT BARU YANG SUDAH TERHUBUNG KE SUPABASE
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isLoading) return; // TAMBAHKAN INI: Mencegah klik ganda saat loading
+    if (isLoading) return;
     setIsLoading(true); // Mulai loading
     setSubmitError(null); // Bersihkan error sebelumnya
 
     try {
-      // Ini adalah kode untuk mengirim data ke Supabase
       const { data, error } = await supabase
         .from('kontak') // Pastikan nama tabel Anda 'kontak'
         .insert([
@@ -43,7 +41,6 @@ export function ContactPage() {
       console.log("Data terkirim:", data);
       setIsSubmitted(true); // Tampilkan pesan sukses
 
-      // Gunakan logic timeout asli Anda untuk reset form
       setTimeout(() => {
         setIsSubmitted(false); // Sembunyikan pesan sukses
         setFormData({ name: "", contact: "", message: "" }); // Kosongkan form
@@ -55,12 +52,10 @@ export function ContactPage() {
       setSubmitError(error.message || 'Terjadi kesalahan. Silakan coba lagi.');
     
     } finally {
-      // Apapun hasilnya, hentikan loading
       setIsLoading(false);
     }
   };
 
-  // --- KODE ANDA YANG LAIN (SAYA BIARKAN UTUH) ---
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent("Halo, saya ingin bertanya tentang produk di Toko Umma Dzikri");
     window.open(`https://wa.me/6281234567890?text=${message}`, '_blank'); // Ganti 62... dengan no WA Anda
@@ -271,16 +266,13 @@ export function ContactPage() {
                     />
                   </div>
 
-                  {/* TAMBAHKAN PESAN ERROR DI SINI */}
                   {submitError && (
                     <p className="text-sm text-red-600 text-center">
                       Error: {submitError}
                     </p>
                   )}
 
-                  {/* MODIFIKASI TOMBOL DENGAN LOADING STATE */}
                   <Button fullWidth type="submit"> 
-                    {/* ^ SAYA HAPUS 'disabled={isLoading}' DARI SINI */}
                     
                     {isLoading ? (
                       <>

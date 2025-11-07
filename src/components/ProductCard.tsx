@@ -1,9 +1,8 @@
 import React from 'react';
-import { Button } from './Button'; // Path sudah benar
+import { Button } from './Button'; 
 import { ImageWithFallback } from './figma/ImageWithFallback'; 
 import { Link } from 'react-router-dom'; 
 
-// Definisikan tipe data Produk (sesuai database)
 interface Product {
   id: number;
   title: string;
@@ -28,7 +27,7 @@ export function ProductCard({ product }: ProductCardProps) {
       to={`/produk/${product.id}`} 
       className="flex flex-col bg-white rounded-lg border border-[var(--netral-garis-batas)] overflow-hidden transition-all hover:shadow-lg"
     >
-      {/* Gambar Produk */}
+
       <div className="w-full aspect-square overflow-hidden">
         <ImageWithFallback
           src={product.image}
@@ -37,7 +36,6 @@ export function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      {/* Konten Teks */}
       <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-xl font-semibold text-[var(--brand-coklat-tua)] mb-2">
           {product.title}
@@ -52,12 +50,9 @@ export function ProductCard({ product }: ProductCardProps) {
           </span>
         </div>
 
-        {/* --- PERBAIKAN DI SINI ---
-           Kita pindahkan className="w-full mt-auto" ke <div> pembungkus 
-           karena <Button> tidak bisa menerimanya.
-        */}
+
         <div className="w-full mt-auto">
-          <Button fullWidth> {/* Kita juga bisa tambahkan prop 'fullWidth' jika ada */}
+          <Button fullWidth> 
             Selengkapnya
           </Button>
         </div>

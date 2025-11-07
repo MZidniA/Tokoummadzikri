@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { InputField } from "./InputField";
-import { Button } from "./Button"; // Sesuaikan path jika perlu
+import { Button } from "./Button"; 
 import { Plus, Edit, Trash2, X, Loader2, UploadCloud, Image } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Navbar } from './Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-// Alamat API Backend Anda (PASTIKAN INI SUDAH HTTPS)
 const API_URL = 'https://api-tokoummadzikri.duckdns.org';
 
 interface Product {
@@ -144,13 +142,11 @@ export function AdminDashboard() {
         data.append('files', file); 
       });
 
-      // --- INI DIA PERBAIKANNYA ---
       if (editingProduct && uploadingFiles.length === 0) {
         data.append('image', formData.image);
         // Mengubah array URL menjadi satu string dipisah koma
         data.append('images', (formData.images || []).join(','));
       }
-      // -----------------------------
 
       let response: Response;
       if (editingProduct) {
@@ -198,7 +194,6 @@ export function AdminDashboard() {
     }
   };
 
-  // --- Sisa fungsi (formatPrice, handleLogout) tetap sama ---
   const formatPrice = (price: string) => {
     if (!price) return "Rp 0";
     return `Rp ${parseInt(price).toLocaleString('id-ID')}`;
@@ -209,10 +204,8 @@ export function AdminDashboard() {
     navigate('/');
   };
 
-  // --- JSX (Tampilan) tidak ada perubahan ---
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-[var(--netral-putih-bg)] py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -383,7 +376,6 @@ export function AdminDashboard() {
                     <Button 
                       type="submit" 
                       fullWidth 
-                      // 'disabled' DIHAPUS
                     >
                       {isSubmitting ? (
                         <Loader2 className="h-5 w-5 animate-spin" />
@@ -399,7 +391,6 @@ export function AdminDashboard() {
                         if (isSubmitting) return; 
                         resetModalState();
                       }}
-                      // 'disabled' DIHAPUS
                     >
                       Batal
                     </Button>

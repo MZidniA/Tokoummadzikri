@@ -1,9 +1,7 @@
 import { ShoppingBag, User, Menu, X } from 'lucide-react';
 import { useState } from 'react';
-// IMPORT Link dan NavLink dari react-router-dom
 import { Link, NavLink } from 'react-router-dom';
 
-// Navbar tidak perlu props 'onNavigate' atau 'currentPage' lagi
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -18,7 +16,7 @@ export function Navbar() {
     <nav className="bg-white border-b border-[var(--netral-garis-batas)] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo sekarang adalah <Link> ke Halaman Utama */}
+
           <Link to="/" className="flex items-center cursor-pointer">
             <ShoppingBag className="h-8 w-8 text-[var(--brand-coklat-sedang)]" />
             <span className="ml-2 text-[var(--brand-coklat-tua)]" style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '20px' }}>
@@ -26,13 +24,12 @@ export function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Navigation (Gunakan <NavLink>) */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
-                // NavLink otomatis tahu halaman mana yang "aktif"
+
                 className={({ isActive }) =>
                   `transition-colors ${
                     isActive
@@ -48,16 +45,15 @@ export function Navbar() {
                 {item.name}
               </NavLink>
             ))}
-            {/* Tombol Admin (Gunakan <Link>) */}
+
             <Link
-              to="/admin/dashboard" // INI ADALAH RUTE "TERGEMBOK"
+              to="/admin/dashboard" 
               className="p-2 rounded-full hover:bg-[var(--brand-coklat-muda)] transition-colors"
             >
               <User className="h-5 w-5 text-[var(--brand-coklat-sedang)]" />
             </Link>
           </div>
 
-          {/* Mobile menu button (logika ini tetap sama) */}
           <button
             className="md:hidden p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -70,7 +66,6 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Navigation (Gunakan <NavLink> dan <Link>) */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 space-y-2">
             {navItems.map((item) => (

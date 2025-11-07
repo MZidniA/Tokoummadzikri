@@ -15,17 +15,12 @@ const upload = multer({ storage: storage });
 app.use(cors());
 app.use(express.json());
 
-// ========================
-// --- RUTE (ENDPOINT) ANDA ---
-// ========================
 
 app.get('/', (req, res) => {
   res.send('Halo! Ini adalah Backend Toko Umma Dzikri 🚀');
 });
 
-// ------------------------
-// --- RUTE PRODUK (READ) ---
-// ------------------------
+
 
 // GET /produk (Ambil SEMUA produk)
 app.get('/produk', async (req, res) => {
@@ -199,8 +194,6 @@ app.delete('/produk/:id', async (req, res) => {
   console.log(`Menerima permintaan DELETE /produk/${id}`);
 
   try {
-    // (Nanti: Kita juga harus hapus file dari Supabase Storage)
-    
     // Hapus data dari database
     const { error } = await supabase
       .from('produk')

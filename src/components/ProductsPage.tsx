@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-// import { supabase } from '../supabaseClient'; // <-- DIHAPUS
 import { ProductCard } from './ProductCard'; 
 import { Loader2 } from 'lucide-react';
 
-// Alamat API Backend Anda
 const API_URL = 'https://api-tokoummadzikri.duckdns.org';
 
 interface Product {
@@ -28,7 +26,6 @@ export function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("Semua"); 
   const [isLoading, setIsLoading] = useState(true);
 
-  // --- (DIUBAH) FUNGSI MENGAMBIL DATA ---
   useEffect(() => {
     async function fetchProducts() {
       setIsLoading(true);
@@ -48,7 +45,6 @@ export function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // Efek filter (Tidak berubah)
   useEffect(() => {
     if (selectedCategory === "Semua") {
       setFilteredProducts(allProducts); 
@@ -60,7 +56,6 @@ export function ProductsPage() {
     }
   }, [selectedCategory, allProducts]);
 
-  // --- JSX (Tampilan) tidak ada perubahan ---
   return (
     <div className="bg-[var(--netral-putih-bg)] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -70,7 +65,6 @@ export function ProductsPage() {
           <p className="text-lg text-[var(--netral-abu-abu)] mt-2">Temukan semua kebutuhan Anda di sini</p>
         </div>
 
-        {/* Filter Kategori */}
         <div className="mb-8">
           <p className="text-sm font-semibold text-[var(--netral-hitam)] mb-3">Kategori</p>
           <div className="flex flex-wrap gap-2">
@@ -90,7 +84,6 @@ export function ProductsPage() {
           </div>
         </div>
 
-        {/* Tampilan Loading */}
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <Loader2 className="h-12 w-12 text-[var(--brand-coklat-sedang)] animate-spin" />

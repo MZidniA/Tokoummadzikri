@@ -3,9 +3,7 @@ import { ProductCard } from "./ProductCard";
 import { Button } from "./Button"; 
 import { MapPin, ShoppingBag, Truck, Sparkles, Star, Loader2, Image as ImageIcon } from "lucide-react"; 
 import { Link } from 'react-router-dom';
-// import { supabase } from '../supabaseClient'; // <-- DIHAPUS
 
-// Alamat API Backend Anda
 const API_URL = 'https://api-tokoummadzikri.duckdns.org';
 
 interface Product {
@@ -24,7 +22,6 @@ export function HomePage() {
   const [categoryImages, setCategoryImages] = useState<Record<string, string>>({});
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
-  // --- (DIUBAH) MENGAMBIL SEMUA DATA DARI API BARU ---
   useEffect(() => {
     async function fetchAllData() {
       setIsLoadingProducts(true);
@@ -35,15 +32,14 @@ export function HomePage() {
         if (!response.ok) throw new Error('Gagal mengambil data');
         const allProducts: Product[] = await response.json();
 
-        // 1. Set Produk Terbaru (Best Seller)
-        // API Anda sudah mengurutkan, jadi kita ambil 6 pertama
+
         setLatestProducts(allProducts.slice(0, 6)); 
         setIsLoadingProducts(false);
 
-        // 2. Set Gambar Kategori
+
         const newCategoryImages: Record<string, string> = {};
         for (const categoryName of categories) {
-          // Cari produk pertama di 'allProducts' yang cocok dengan kategori
+
           const productInCategory = allProducts.find(p => p.category === categoryName);
           if (productInCategory) {
             newCategoryImages[categoryName] = productInCategory.image;
@@ -64,7 +60,7 @@ export function HomePage() {
     fetchAllData();
   }, []); 
 
-  // --- DATA STATIS (Tetap sama) ---
+
   const advantages = [
     { icon: MapPin, title: "Lokal & Strategis", description: "Hadir di Depok, lebih dekat dengan Anda" },
     { icon: ShoppingBag, title: "Variasi Lengkap", description: "Semua kebutuhan anak (makanan, pakaian, mainan, souvenir) dalam satu toko" },
@@ -80,7 +76,7 @@ export function HomePage() {
     window.open('https://shopee.co.id', '_blank');
   };
 
-  // --- JSX (Tampilan) tidak ada perubahan ---
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}

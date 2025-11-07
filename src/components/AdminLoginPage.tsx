@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-// Impor komponen Anda yang sudah ada
 import { Button } from './ui/Button'; 
 import { InputField } from './InputField'; 
 
@@ -72,10 +71,6 @@ export function AdminLoginPage() {
               />
             </div>
 
-            {/* --- PERBAIKAN DI SINI ---
-               Saya hapus `variant="secondary"` agar tombolnya
-               kembali ke style default (yang kuning).
-            */}
             <div>
               <button
             type="submit"

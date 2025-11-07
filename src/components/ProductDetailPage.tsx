@@ -3,9 +3,7 @@ import { ChevronRight, ShoppingCart, MessageCircle, CheckCircle, Loader2 } from 
 import { Button } from "./Button"; // Sesuaikan path jika perlu
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Link, useParams } from "react-router-dom"; 
-// import { supabase } from '../supabaseClient'; // <-- DIHAPUS
 
-// Alamat API Backend Anda
 const API_URL = 'https://api-tokoummadzikri.duckdns.org';
 
 interface Product {
@@ -23,7 +21,6 @@ export function ProductDetailPage() {
   const { id } = useParams<{ id: string }>(); 
   const [selectedImage, setSelectedImage] = useState(0);
 
-  // --- (DIUBAH) FUNGSI MENGAMBIL DATA ---
   useEffect(() => {
     async function fetchProduct() {
       if (!id) return; 
@@ -42,7 +39,6 @@ export function ProductDetailPage() {
     fetchProduct();
   }, [id]); 
 
-  // Sisanya (logika gambar, handle click, JSX) sebagian besar tetap sama
   const productImages = product?.images && product.images.length > 0 
     ? product.images 
     : (product?.image ? [product.image] : []); 
@@ -76,7 +72,7 @@ export function ProductDetailPage() {
   return (
     <div className="min-h-screen bg-[var(--netral-putih-bg)] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb (tetap sama) */}
+
         <nav className="mb-6">
           <ol className="flex items-center gap-2 text-[var(--netral-abu-abu)]" style={{ fontSize: '14px' }}>
             <li>
@@ -99,7 +95,6 @@ export function ProductDetailPage() {
           </ol>
         </nav>
 
-        {/* Main Content (tetap sama) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left Column - Image Gallery */}
           <div className="space-y-4">
@@ -133,7 +128,6 @@ export function ProductDetailPage() {
             )}
           </div>
 
-          {/* Right Column - Product Information */}
           <div className="space-y-6">
             <div>
               <span className="inline-block px-4 py-2 bg-[var(--brand-coklat-muda)] text-[var(--brand-coklat-sedang)] rounded-full" style={{ fontSize: '14px', fontWeight: 500 }}>
@@ -146,8 +140,7 @@ export function ProductDetailPage() {
                 {product.description}
               </p>
             </div>
-        
-            {/* CTA Buttons */}
+
             <div className="space-y-3 pt-4">
               <Button fullWidth onClick={handleShopeeClick}>
                 <ShoppingCart className="h-5 w-5 mr-2 inline" />
